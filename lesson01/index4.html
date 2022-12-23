@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <style>
+        .fa-edit,
+        .fa-trash {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container">
+
+        <div class="row mb-3">
+            <div class="col">
+                <h1 class="display-4">Todo App Sample</h1>
+                <hr>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+
+                <div>
+                    <h4>Create Todo</h1>
+                        <hr>
+                </div>
+
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" placeholder="lorem ipsum" />
+                </div>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="done" />
+                        <label class="form-check-label" for="done">
+                            Done
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <button id="btnAdd" type="button" class="btn btn-primary btn-sm" onclick="addItem()">
+                        <i class="fa fa-save me-2"></i>Add New
+                    </button>
+                    <button id="btnEdit" type="button" class="btn btn-warning btn-sm d-none" data-index="-1" onclick="saveItem()">
+                        <i class="fa fa-save me-2"></i>Save
+                    </button>
+                    <button id="btnCancel" type="button" class="btn btn-secondary btn-sm d-none" onclick="cancelEdit()">
+                        <i class="fa fa-times me-2"></i>Cancel
+                    </button>
+                </div>
+            </div>
+            <div class="col">
+                <div>
+                    <h4>Todo List</h1>
+                        <hr>
+                </div>
+
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <i class="text-danger fa fa-trash me-2"></i>
+                        <i class="text-info fa fa-edit me-2"></i>
+                        <span>Lorem, ipsum dolor.</span>
+                    </li>
+                    <li class="list-group-item">
+                        <i class="text-danger fa fa-trash me-2"></i>
+                        <i class="text-info fa fa-edit me-2"></i>
+                        <span class="text-decoration-line-through">Lorem, ipsum dolor.</span>
+                    </li>
+                    <li class="list-group-item">
+                        <i class="text-danger fa fa-trash me-2"></i>
+                        <i class="text-info fa fa-edit me-2"></i>
+                        <span>Lorem, ipsum dolor.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        var list = [];
+
+        function addItem() {
+            var t = document.getElementById("title").value;
+            var d = document.getElementById("done").checked;
+
+            var item = {
+                "title": t,
+                "done": d
+            };
+
+            list.push(item);
+
+            loadList();
+        }
+
+        function loadList() {
+            var ul = document.getElementsByTagName("ul")[0];
+            ul.innerHTML = "";
+
+            for (var i = 0; i < list.length; i++) {
+                var item = list[i];
+                var css = (item.done) ? "text-decoration-line-through" : "";
+
+                var html =
+                    `<li class="list-group-item">
+                        <i class="text-danger fa fa-trash me-2" onclick="deleteItem(${i})"></i>
+                        <i class="text-info fa fa-edit me-2" onclick="editItem(${i})"></i>
+                        <span class="${css}">${item.title}</span>
+                    </li>`;
+
+                ul.innerHTML += html;
+            }
+        }
+
+        function deleteItem(index) {
+            list.splice(index, 1);
+            loadList();
+        }
+
+        function cancelEdit(){
+            document.getElementById("title").value = "";
+            document.getElementById("done").checked = false;
+
+            document.getElementById("btnAdd").classList.remove("d-none");
+            document.getElementById("btnEdit").classList.add("d-none");
+            document.getElementById("btnCancel").classList.add("d-none");
+        }
+
+        function saveItem(){
+            var index = document.getElementById("btnEdit").getAttribute("data-index");
+            var item = list[index];
+
+            var t = document.getElementById("title").value;
+            var d = document.getElementById("done").checked;
+
+            item.title = t;
+            item.done = d;
+
+            loadList();
+        }
+
+        function editItem(index){
+            var item = list[index];
+            document.getElementById("title").value = item.title;
+            document.getElementById("done").checked = item.done;
+
+            document.getElementById("btnAdd").classList.add("d-none");
+            document.getElementById("btnEdit").classList.remove("d-none");
+            document.getElementById("btnCancel").classList.remove("d-none");
+
+            document.getElementById("btnEdit").setAttribute("data-index",index);
+        }
+    </script>
+
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+        </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+        </script>
+</body>
+
+</html>
