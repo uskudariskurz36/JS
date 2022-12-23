@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+    <main class="container">
+
+        <div class="row mb-3">
+            <div class="col">
+                <h1 class="display-4">List Sample</h1>
+                <hr>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="mb-3">
+
+                    <h4>Add New Text</h4>
+                    <hr>
+
+                    <input type="text" class="form-control" id="txt" placeholder="hello world">
+                </div>
+
+                <div class="mb-3">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="btnClick()">Add</button>
+                </div>
+            </div>
+            <div class="col">
+
+                <h4>List Items</h4>
+                <hr>
+
+                <!-- ul.list-group>li.list-group-item*3>lorem2 -->
+                <ul id="items" class="list-group">
+                    <li class="list-group-item">
+                        <button class="btn btn-danger btn-sm">Sil</button>
+                        <span class="ms-2">Lorem, ipsum.</span>
+                    </li>
+                    <li class="list-group-item">Eos, atque!</li>
+                    <li class="list-group-item">Sunt, beatae!</li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+
+        var list = [];
+
+        function btnClick() {
+            var t = document.getElementById("txt").value;
+
+            list.push(t);
+
+            // console.log(list);
+
+            loadList();
+        }
+
+        function deleteItem(index){
+            list.splice(index, 1);
+            loadList();
+        }
+
+        
+        function loadList() {
+            var ul = document.getElementById("items");
+            ul.innerHTML = "";
+
+            for (var i = 0; i < list.length; i++) {
+                var item = list[i];
+
+                if(item == undefined)
+                continue;
+
+                var li = document.createElement("li");  // <li></li>
+                li.className = "list-group-item"; // <li class="list-group-item"></li>
+
+                var btn = document.createElement("button");
+                btn.className = "btn btn-danger btn-sm";
+                btn.innerText = "Sil";
+                btn.setAttribute("onclick",`deleteItem(${i})`);
+
+                // btn.setAttribute("data-index", i);
+
+                // btn.onclick = function () {
+                //     var index = this.getAttribute("data-index");
+                //     list.splice(index, 1);
+                //     //delete list[index];
+
+                //     loadList();
+                // };
+
+                var span = document.createElement("span");
+                span.className = "ms-2";
+                span.innerText = item;
+
+                li.appendChild(btn);
+                li.appendChild(span);
+
+                ul.appendChild(li);
+            }
+        }
+
+    </script>
+
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+        </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+        </script>
+</body>
+
+</html>
